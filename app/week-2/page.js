@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <main>
       <h1>Shopping List</h1>
-      <p>Romeo Costillas</p>
+      <StudentInfo />
       <Link href="https://github.com/rcostillas/cprg306-assignments.git">
         https://github.com/rcostillas/cprg306-assignments.git
       </Link>
