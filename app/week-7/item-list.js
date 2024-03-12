@@ -1,33 +1,22 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Item from "./item";
 
-export default function ItemList({ items }) {
-  const [sortedItems, setSortedItems] = useState(items);
+export default function ItemList({ items, onItemSelect }) {
   const [sortBy, setSortBy] = useState("name");
-
-  function sortItems() {
-    let sorted;
-    const itemsCopy = [...items];
-
+  const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "name") {
-      sorted = [...itemsCopy].sort((a, b) => a.name.localeCompare(b.name));
+      return a.name.localeCompare(b.name);
     } else if (sortBy === "category") {
-      sorted = [...itemsCopy].sort((a, b) =>
-        a.category.localeCompare(b.category)
-      );
+      return a.category.localeCompare(b.category);
     }
-    setSortedItems(sorted);
-  }
-
-  useEffect(() => {
-    sortItems();
-  }, [sortBy]);
+    return 0;
+  });
 
   return (
     <main className="bg-slate-950">
-      <div className="m-3">
-        <label htmlFor="sort">Sort By: </label>
+      <div className="mt-8">
+        <label htmlFor="sort">Sort by:</label>
         <button
           onClick={() => setSortBy("name")}
           className={`${
@@ -44,11 +33,20 @@ export default function ItemList({ items }) {
         >
           Category
         </button>
-        <div className="flex flex-col">
+
+        <ul>
           {sortedItems.map((item) => (
-            <Item key={item.id} {...item} />
+            <li key={item.id}>
+              <Item
+                id={item.id}
+                name={item.name}
+                quantity={item.quantity}
+                category={item.category}
+                onSelect={() => onItemSelect(item)}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </main>
   );
